@@ -16,6 +16,7 @@ app.post("/deepseek", async (req, res) => {
     const result = await openai.chat.completions.create({
         messages: [{ role: "user", content: req.body.prompt }],
         model: "deepseek/deepseek-v3-base:free",
+        max_tokens: 100
     });
     res.json({ response: result.choices[0].message.content });
 });
