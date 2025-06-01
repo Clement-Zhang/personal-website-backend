@@ -1,7 +1,7 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
-import { OpenAI } from "openai";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const { OpenAI } = require("openai");
 
 dotenv.config();
 const app = express();
@@ -15,8 +15,7 @@ const openai = new OpenAI({
 app.post("/deepseek", async (req, res) => {
     const result = await openai.chat.completions.create({
         messages: [{ role: "user", content: req.body.prompt }],
-        model: "deepseek/deepseek-v3-base:free",
-        max_tokens: 100
+        model: "deepseek/deepseek-chat-v3-0324:free"
     });
     res.json({ response: result.choices[0].message.content });
 });
