@@ -21,5 +21,4 @@ app.post("/deepseek", async (req, res) => {
 });
 
 app.listen(3001, () => {
-    console.log("working");
 });
