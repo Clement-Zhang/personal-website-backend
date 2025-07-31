@@ -17,7 +17,7 @@ exports.reformatPrompt = async (req, res) => {
             },
             {
                 role: 'user',
-                content: "i like gaming. i don't like drugs. give me a match.",
+                content: req.body.prompt,
             },
         ],
     });

@@ -1,5 +1,5 @@
 const express = require('express');
-const ama = express.ama();
+const ama = express.Router();
 const userController = require('../controllers/ama.controller');
 ama.post('/deepseek', userController.reformatPrompt);
 ama.post('/match', userController.getMatches);
