@@ -17,17 +17,18 @@ exports.reformatPrompt = async (req, res) => {
             },
             {
                 role: 'user',
-                content: req.body.prompt,
+                content: req.body,
             },
         ],
     });
-    res.json({ response: result.choices[0].message.content });
+    res.set('Content-Type', 'text/plain');
+    res.send(result.choices[0].message.content);
 };
 
 exports.getMatches = async (req, res) => {
     const embedding = await api.featureExtraction({
         model: 'sentence-transformers/all-MiniLM-L6-v2',
-        inputs: req.body.profile,
+        inputs: req.body,
         provider: 'auto',
     });
     const embeddingBuffer = Buffer.from(new Float32Array(embedding).buffer);
@@ -47,10 +48,10 @@ exports.getMatches = async (req, res) => {
             dislikes: dislikes,
         };
     });
-    res.json({ matches: matches });
+    res.json(matches);
 };
 
-exports.reset = async (req, res) => {
+exports.reset = async (_, res) => {
     db.exec('DROP TABLE IF EXISTS "users";');
     db.exec('DROP TABLE IF EXISTS "items";');
     db.exec('DROP TABLE IF EXISTS "likes";');
@@ -75,5 +76,5 @@ exports.reset = async (req, res) => {
         'SELECT id, name, gender, want FROM embeddings JOIN users ON users.id = embeddings.rowid WHERE knn_search(embedding, knn_param(?, 5))'
     );
     await amaService.loadDummyData(data);
-    res.json({ status: 'ok' });
+    res.end();
 };
