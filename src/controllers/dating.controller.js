@@ -1,7 +1,7 @@
 const db = require('../configs/sqlite.config');
 const api = require('../configs/huggingface.config');
-const amaService = require('../services/ama.service');
-const data = require('../datasets/ama');
+const amaService = require('../services/dating.service');
+const data = require('../datasets/dating');
 
 let getMatches;
 
