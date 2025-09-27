@@ -1,4 +1,4 @@
-const ama = [
+export const dating = [
     {
         name: 'mia',
         gender: 'female',
@@ -70,5 +70,3 @@ const ama = [
         dislikes: ['rainy days', 'cold coffee', 'bad drivers'],
     },
 ];
-
-module.exports = ama;

@@ -1,8 +1,13 @@
-const express = require('express');
-const ama = express.Router();
-const userController = require('../controllers/dating.controller');
-ama.post('/deepseek', userController.reformatPrompt);
-ama.post('/match', userController.getMatches);
-ama.post('/reset', userController.reset);
+import {
+    reformat,
+    match,
+    reset,
+} from '../controllers/dating.controller.js';
+import { Router } from 'express';
+const dating = Router();
 
-module.exports = ama;
+dating.post('/reformat', reformat);
+dating.post('/match', match);
+dating.post('/reset', reset);
+
+export default dating;

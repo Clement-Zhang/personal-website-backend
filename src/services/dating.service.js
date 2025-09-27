@@ -1,67 +1,70 @@
-const db = require('../configs/sqlite.config');
-const api = require('../configs/huggingface.config');
+import { collection } from '../configs/mongo.config.js';
+import { dating } from '../datasets/dating.js';
+import api from '../configs/huggingface.config.js';
 
-exports.loadDummyData = async (data) => {
-    let userInsert = db.prepare(
-        'INSERT INTO users (name, gender, want) VALUES ($name, $gender, $want)'
-    );
-    let itemInsert = db.prepare(
-        'INSERT OR IGNORE INTO items (item) VALUES ($item);'
-    );
-    let likesInsert = db.prepare(
-        'INSERT INTO likes (user_id, item_id) SELECT users.id, items.id FROM users, items WHERE users.name = $name AND items.item = $item;'
-    );
-    let dislikesInsert = db.prepare(
-        'INSERT INTO dislikes (user_id, item_id) SELECT users.id, items.id FROM users, items WHERE users.name = $name AND items.item = $item;'
-    );
-    let embeddingInsert = db.prepare(
-        'INSERT INTO embeddings (rowid, embedding) VALUES ($userId, $embedding)'
-    );
-    await Promise.all(
-        data.map(async (user) => {
-            let userId = userInsert.run({
-                name: user.name,
-                gender: user.gender,
-                want: user.want,
-            }).lastInsertRowid;
-            let profile =
-                'my name is ' +
-                user.name +
-                ', and I am a ' +
-                user.gender +
-                ' looking to meet a ' +
-                user.want +
-                '. I enjoy ' +
-                user.likes.join(', ') +
-                ", and I'm not a fan of " +
-                user.dislikes.join(', ') +
-                '.';
-            let embedding = await api.featureExtraction({
-                model: 'sentence-transformers/all-MiniLM-L6-v2',
-                inputs: profile,
-                provider: 'auto',
-            });
-            const embeddingBuffer = Buffer.from(
-                new Float32Array(embedding).buffer
-            );
-            embeddingInsert.run({
-                userId: userId,
-                embedding: embeddingBuffer,
-            });
-            user.likes.forEach((like) => {
-                itemInsert.run({ item: like });
-                likesInsert.run({
-                    name: user.name,
-                    item: like,
-                });
-            });
-            user.dislikes.forEach((dislike) => {
-                itemInsert.run({ item: dislike });
-                dislikesInsert.run({
-                    name: user.name,
-                    item: dislike,
-                });
-            });
+export async function reformatProfile(profile) {
+    return (
+        await api.chatCompletion({
+            provider: 'auto',
+            model: 'deepseek-ai/DeepSeek-V3-0324',
+            messages: [
+                {
+                    role: 'system',
+                    content:
+                        'You are being used in a dating application. Reformat the user\'s input into this exact structure: "I am a {user\'s gender} looking to meet a {match\'s gender}. I enjoy {likes}, and I\'m not a fan of {dislikes}." Remove parts of the sentence if the info is missing, but keep the rest intact. If only one gender is given, assume the other is the opposite; if both are missing, respond only with "fail". Include likes/dislikes if at least one is present; if both gender info and preferences are missing, respond only with "fail". Ignore names completely and never paraphrase or add info.',
+                },
+                {
+                    role: 'user',
+                    content: profile,
+                },
+            ],
         })
-    );
-};
+    ).choices[0].message.content.replace(/['"]+/g, '');
+}
+
+export async function summarizeProfile(profile) {
+    return await api.featureExtraction({
+        model: 'sentence-transformers/all-MiniLM-L6-v2',
+        inputs: profile,
+        provider: 'auto',
+    });
+}
+
+export async function loadTestUsers() {
+    dating.forEach(async (user) => {
+        let profile =
+            'I am a ' +
+            user.gender +
+            ' looking to meet a ' +
+            user.want +
+            '. I enjoy ' +
+            user.likes.join(', ') +
+            ", and I'm not a fan of " +
+            user.dislikes.join(', ') +
+            '.';
+        let summary = await summarizeProfile(profile);
+        await collection.insertOne({ ...user, summary: summary });
+    });
+}
+
+export async function getMatches(embedding) {
+    return await collection
+        .aggregate([
+            {
+                $vectorSearch: {
+                    exact: false,
+                    index: 'summary',
+                    limit: 5,
+                    numCandidates: 100,
+                    path: 'summary',
+                    queryVector: embedding,
+                },
+            },
+            { $project: { summary: 0, _id: 0 } },
+        ])
+        .toArray();
+}
+
+export async function deleteUsers() {
+    await collection.deleteMany();
+}

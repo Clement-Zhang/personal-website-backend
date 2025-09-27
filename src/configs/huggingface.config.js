@@ -1,5 +1,3 @@
-const { InferenceClient } = require('@huggingface/inference');
-require('dotenv').config();
-const api = new InferenceClient(process.env.HUGGINGFACE_KEY);
-
-module.exports = api;
+import { InferenceClient } from '@huggingface/inference';
+import 'dotenv/config';
+export default new InferenceClient(process.env.HUGGINGFACE_KEY);
