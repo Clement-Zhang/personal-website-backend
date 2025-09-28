@@ -6,14 +6,10 @@ import {
     deleteUsers,
 } from '../services/dating.service.js';
 
-export async function reformat(req, res) {
-    console.log(await reformatProfile(req.body));
-    res.send(await reformatProfile(req.body));
-}
+export const reformat = async (prompt) => await reformatProfile(prompt);
 
-export async function match(req, res) {
-    res.send(await getMatches(await summarizeProfile(req.body)));
-}
+export const match = async (profile) =>
+    await getMatches(await summarizeProfile(profile));
 
 export async function reset(_, res) {
     await deleteUsers();
