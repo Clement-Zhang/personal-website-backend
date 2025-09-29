@@ -12,6 +12,7 @@ const io = new Server(server, {
         origin: '*',
     },
 });
+
 app.use(cors());
 app.use(express.text());
 app.use('/dating/api', datingRoutes);
