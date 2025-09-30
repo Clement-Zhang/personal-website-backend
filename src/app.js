@@ -10,9 +10,7 @@ import 'dotenv/config';
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: '*',
-    },
+    cors: corsOptions,
 });
 
 app.use(cors(corsOptions));
