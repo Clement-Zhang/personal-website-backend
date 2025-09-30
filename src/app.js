@@ -12,7 +12,7 @@ const io = new Server(server, {
     cors: corsOptions,
 });
 
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.text());
 app.use('/dating/api', datingRoutes);
 io.on('connection', datingSocket);
