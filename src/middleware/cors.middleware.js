@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-export default corsOptions = {
+export default {
     origin: (origin, callback) => {
         if (
             !origin ||
