@@ -1,5 +1,6 @@
 import datingRoutes from './routes/dating.routes.js';
 import datingSocket from './middleware/socket.middleware.js';
+import corsOptions from './middleware/cors.middleware.js';
 import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 import cors from 'cors';
