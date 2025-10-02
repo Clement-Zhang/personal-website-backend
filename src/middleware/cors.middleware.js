@@ -6,7 +6,9 @@ export default {
             'origin ',
             origin,
             'list ',
-            process.env.CORS_ORIGINS.split(',')
+            process.env.CORS_ORIGINS.split(','),
+            'test ',
+            !origin
         );
         if (!origin || process.env.CORS_ORIGINS.split(',').includes(origin)) {
             callback(null, true);
