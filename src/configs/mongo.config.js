@@ -12,8 +12,9 @@ const client = new MongoClient(process.env.MONGODB_URI, {
 async function run() {
     try {
         await client.connect();
-        const collection = client.db('dating').collection('users');
-        await collection.createSearchIndex({
+        const dating = client.db('dating').collection('users');
+        const analytics = client.db('analytics').collection('users');
+        await dating.createSearchIndex({
             name: 'summary',
             type: 'vectorSearch',
             definition: {
@@ -27,10 +28,11 @@ async function run() {
                 ],
             },
         });
-        return collection;
+        return { dating, analytics };
     } catch (err) {
         console.log(err);
         await client.close();
     }
 }
+
 export const collection = await run().catch(console.dir);

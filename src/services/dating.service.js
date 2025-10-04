@@ -1,4 +1,4 @@
-import { collection } from '../configs/mongo.config.js';
+import { dating as datingCollection } from '../configs/mongo.config.js';
 import { dating } from '../datasets/dating.js';
 import api from '../configs/huggingface.config.js';
 
@@ -43,12 +43,12 @@ export async function loadTestUsers() {
             user.dislikes.join(', ') +
             '.';
         let summary = await summarizeProfile(profile);
-        await collection.insertOne({ ...user, summary: summary });
+        await datingCollection.insertOne({ ...user, summary: summary });
     });
 }
 
 export async function getMatches(embedding) {
-    return await collection
+    return await datingCollection
         .aggregate([
             {
                 $vectorSearch: {
@@ -66,5 +66,5 @@ export async function getMatches(embedding) {
 }
 
 export async function deleteUsers() {
-    await collection.deleteMany();
+    await datingCollection.deleteMany();
 }
