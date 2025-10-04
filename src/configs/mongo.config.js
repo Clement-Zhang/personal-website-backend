@@ -35,4 +35,4 @@ async function run() {
     }
 }
 
-export const collection = await run().catch(console.dir);
+export const { dating, analytics } = await run().catch(console.dir);
