@@ -1,5 +1,5 @@
 import { dating as datingCollection } from '../configs/mongo.config.js'; //renamed only to avoid naming conflict
-import { datingData } from '../datasets/dating.js';
+import { dating as datingData } from '../datasets/dating.js';
 import api from '../configs/huggingface.config.js';
 
 export async function reformatProfile(profile) {
