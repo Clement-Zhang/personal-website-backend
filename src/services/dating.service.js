@@ -1,5 +1,5 @@
-import { dating as datingCollection } from '../configs/mongo.config.js';
-import { dating } from '../datasets/dating.js';
+import { dating as datingCollection } from '../configs/mongo.config.js'; //renamed only to avoid naming conflict
+import { datingData } from '../datasets/dating.js';
 import api from '../configs/huggingface.config.js';
 
 export async function reformatProfile(profile) {
@@ -31,7 +31,7 @@ export async function summarizeProfile(profile) {
 }
 
 export async function loadTestUsers() {
-    dating.forEach(async (user) => {
+    datingData.forEach(async (user) => {
         let profile =
             'I am a ' +
             user.gender +
