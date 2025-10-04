@@ -18,7 +18,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.text());
 app.use('/dating/api', datingRoutes);
-app.use('analytics/api', analyticsRoutes);
+app.use('/analytics/api', analyticsRoutes);
 app.use('/generic', genericRoutes);
 io.on('connection', datingSocket);
 
