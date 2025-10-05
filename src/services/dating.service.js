@@ -16,18 +16,19 @@ export async function reformatProfile(profile) {
             content: profile,
         },
     ];
-    const response =
-        process.env.ACTIVE_API === 'openai'
-            ? await openaiAPI.chat.completions.create({
-                  model: 'deepseek/deepseek-chat-v3.1:free',
-                  messages: prompt,
-              })
-            : await huggingfaceAPI.chatCompletion({
+    return process.env.ACTIVE_API === 'openai'
+        ? await openaiAPI.chat.completions.create({
+              model: 'deepseek/deepseek-chat-v3.1:free',
+              messages: prompt,
+              streaming: true,
+          })
+        : await huggingfaceAPI
+              .chatCompletion({
                   provider: 'auto',
                   model: 'deepseek-ai/DeepSeek-V3-0324',
                   messages: prompt,
-              });
-    return response.choices[0].message.content.replace(/['"]+/g, '');
+              })
+              .choices[0].message.content.replace(/['"]+/g, '');
 }
 
 export async function summarizeProfile(profile) {
