@@ -1,4 +1,8 @@
-import { reformat, match } from '../controllers/dating.controller.js';
+import {
+    reformatProfile,
+    getMatches,
+    summarizeProfile,
+} from '../services/dating.service.js';
 
 export const reformat = async (prompt) => await reformatProfile(prompt);
 
