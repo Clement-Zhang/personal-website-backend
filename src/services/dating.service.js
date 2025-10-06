@@ -1,10 +1,11 @@
 import { dating as datingCollection } from '../configs/mongo.config.js'; //renamed only to avoid naming conflict
 import { dating as datingData } from '../datasets/dating.js';
 import openaiAPI from '../configs/openai.config.js';
+import huggingfaceAPI from '../configs/huggingface.config.js';
 import 'dotenv/config';
 
-export async function reformatProfile(profile) {
-    return await openaiAPI.chat.completions.create({
+export const reformatProfile = async (profile) =>
+    await openaiAPI.chat.completions.create({
         model:
             process.env.ACTIVE_API === 'openrouter'
                 ? 'deepseek/deepseek-chat-v3.1:free'
@@ -22,17 +23,15 @@ export async function reformatProfile(profile) {
         ],
         stream: true,
     });
-}
 
-export async function summarizeProfile(profile) {
-    return await huggingfaceAPI.featureExtraction({
+export const summarizeProfile = async (profile) =>
+    await huggingfaceAPI.featureExtraction({
         model: 'sentence-transformers/all-MiniLM-L6-v2',
         inputs: profile,
         provider: 'auto',
     });
-}
 
-export async function loadTestUsers() {
+export const loadTestUsers = async () =>
     datingData.forEach(async (user) => {
         let profile =
             'I am a ' +
@@ -47,10 +46,9 @@ export async function loadTestUsers() {
         let summary = await summarizeProfile(profile);
         await datingCollection.insertOne({ ...user, summary: summary });
     });
-}
 
-export async function getMatches(embedding) {
-    return await datingCollection
+export const getMatches = async (embedding) =>
+    await datingCollection
         .aggregate([
             {
                 $vectorSearch: {
@@ -65,8 +63,5 @@ export async function getMatches(embedding) {
             { $project: { summary: 0, _id: 0 } },
         ])
         .toArray();
-}
 
-export async function deleteUsers() {
-    await datingCollection.deleteMany();
-}
+export const deleteUsers = async () => await datingCollection.deleteMany();
