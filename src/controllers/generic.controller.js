@@ -1,3 +1,1 @@
-export async function wake(_, res) {
-    res.end();
-}
+export const wake = async (_, res) => res.end();

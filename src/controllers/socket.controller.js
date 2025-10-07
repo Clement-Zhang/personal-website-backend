@@ -4,7 +4,7 @@ import {
     summarizeProfile,
 } from '../services/dating.service.js';
 
-export const reformat = async (prompt, socket) => {
+export async function reformat(prompt, socket) {
     const stream = await reformatProfile(prompt);
     for await (const chunk of stream) {
         socket.emit('reformat', {
@@ -13,8 +13,7 @@ export const reformat = async (prompt, socket) => {
         });
     }
     socket.emit('reformat', { type: 'end' });
-};
+}
 
-export const match = async (profile, callback) => {
+export const match = async (profile, callback) =>
     callback(await getMatches(await summarizeProfile(profile)));
-};
