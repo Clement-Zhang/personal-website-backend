@@ -6,5 +6,5 @@ export default new OpenAI({
         process.env.ACTIVE_API === 'openrouter'
             ? 'https://openrouter.ai/api/v1'
             : 'https://router.huggingface.co/v1',
-    apiKey: process.env.OPENAI_KEY,
+    apiKey: process.env.OPENROUTER_KEY,
 });
