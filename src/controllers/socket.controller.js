@@ -7,6 +7,7 @@ import {
 export async function reformat(prompt, socket) {
     const stream = await reformatProfile(prompt);
     for await (const chunk of stream) {
+        console.log('sending data');
         socket.emit('reformat', {
             type: 'res',
             chunk: chunk.choices[0].delta.content,
