@@ -5,6 +5,7 @@ import {
 } from '../services/dating.service.js';
 
 export async function reformat(prompt, socket) {
+    console.log('in');
     const stream = await reformatProfile(prompt);
     for await (const chunk of stream) {
         console.log('sending data');
