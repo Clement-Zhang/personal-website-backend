@@ -14,6 +14,7 @@ async function run() {
         await client.connect();
         const dating = client.db('dating').collection('users');
         const analytics = client.db('analytics').collection('users');
+        const changes = analytics.watch();
         await dating.createSearchIndex({
             name: 'summary',
             type: 'vectorSearch',
