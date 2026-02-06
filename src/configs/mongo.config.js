@@ -29,11 +29,11 @@ async function run() {
                 ],
             },
         });
-        return { dating, analytics };
+        return { dating, analytics, changes };
     } catch (err) {
         console.log(err);
         await client.close();
     }
 }
 
-export const { dating, analytics } = await run().catch(console.dir);
+export const { dating, analytics, changes } = await run().catch(console.dir);
