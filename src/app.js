@@ -1,6 +1,7 @@
 import datingRoutes from './routes/dating.routes.js';
-import datingSocket from './middleware/socket.middleware.js';
+import datingSocket from './middleware/sockets/dating.socket.js';
 import analyticsRoutes from './routes/analytics.routes.js';
+import analyticsSocket from './middleware/sockets/analytics.socket.js';
 import genericRoutes from './routes/generic.routes.js';
 import corsOptions from './middleware/cors.middleware.js';
 import { createServer } from 'node:http';
@@ -20,6 +21,7 @@ app.use(express.text());
 app.use('/dating/api', datingRoutes);
 app.use('/analytics/api', analyticsRoutes);
 app.use('/generic', genericRoutes);
-io.on('connection', datingSocket);
+io.of('/dating').on('connection', datingSocket);
+io.of('/analytics').on('connection', analyticsSocket);
 
 server.listen(3001, () => {});

@@ -2,7 +2,7 @@ import {
     reformatProfile,
     getMatches,
     summarizeProfile,
-} from '../services/dating.service.js';
+} from '../../services/dating.service.js';
 
 export async function reformat(prompt, socket) {
     const stream = await reformatProfile(prompt);

@@ -1,4 +1,4 @@
-import { reformat, match } from '../controllers/socket.controller.js';
+import { reformat, match } from '../../controllers/sockets/dating.socket.js';
 
 export default (socket) => {
     socket.on('reformat', async (data) =>
