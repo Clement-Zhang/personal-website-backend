@@ -8,7 +8,7 @@ export const reformatProfile = async (profile) =>
     await openaiAPI.chat.completions.create({
         model:
             process.env.ACTIVE_API === 'openrouter'
-                ? 'deepseek/deepseek-chat-v3.1:free'
+                ? 'deepseek/deepseek-r1-0528:free'
                 : 'deepseek-ai/DeepSeek-V3.1-Terminus',
         messages: [
             {
