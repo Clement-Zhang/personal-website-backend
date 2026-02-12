@@ -1,4 +1,4 @@
-import { getAllUsers, getAnalytics } from '../../services/analytics.service';
+import { getAllUsers, getAnalytics } from '../../services/analytics.service.js';
 
 export async function load(socket) {
     socket.emit('load', {
