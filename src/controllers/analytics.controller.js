@@ -12,7 +12,7 @@ export async function addUser(req, res) {
     res.end();
 }
 
-export const load = async (_, res) =>
+export const getData = async (_, res) =>
     res.json({
         users: await getAllUsers(),
         analytics: await getAnalytics(),
