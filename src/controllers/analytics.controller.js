@@ -7,6 +7,12 @@ import {
     deleteUsers,
 } from '../services/analytics.service.js';
 
+export const load = async (_, res) =>
+    res.json({
+        users: await getAllUsers(),
+        analytics: await getAnalytics(),
+    });
+
 export async function addUser(req, res) {
     await addOneUser(req.body);
     res.end();

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+    load,
     addUser,
     getUsers,
     summarize,
@@ -11,6 +12,7 @@ import {
 const analytics = Router();
 
 analytics.post('/add', addUser);
+analytics.get('/load', load);
 analytics.get('/get', getUsers);
 analytics.get('/summarize', summarize);
 analytics.post('/edit', editUser);
