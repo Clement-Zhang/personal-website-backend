@@ -8,6 +8,8 @@ import { createServer } from 'node:http';
 import { Server } from 'socket.io';
 import cors from 'cors';
 import express from 'express';
+import 'dotenv/config';
+
 
 const app = express();
 const server = createServer(app);
@@ -24,4 +26,4 @@ app.use('/generic', genericRoutes);
 io.of('/dating').on('connection', datingSocket);
 io.of('/analytics').on('connection', analyticsSocket);
 
-server.listen(3001, () => {});
+server.listen(process.env.PORT, () => {});
