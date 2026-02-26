@@ -2,6 +2,10 @@ import 'dotenv/config';
 
 export default {
     origin: (origin, callback) => {
+        print(
+            'actual origin: ' + origin,
+            'allowed origins: ' + process.env.CORS_ORIGINS,
+        );
         if (!origin || process.env.CORS_ORIGINS.split(',').includes(origin)) {
             callback(null, true);
         } else {
