@@ -38,13 +38,13 @@ export async function getAnalytics() {
         55: 0,
         65: 0,
     };
-    await analytics
+    let temp = await analytics
         .aggregate([{ $group: { _id: '$gender', count: { $sum: 1 } } }])
-        .toArray()
-        .forEach(
-            (genderCount) => (template[genderCount._id] = genderCount.count)
-        );
-    await analytics
+        .toArray();
+    temp.forEach(
+        (genderCount) => (template[genderCount._id] = genderCount.count),
+    );
+    temp = await analytics
         .aggregate([
             {
                 $bucket: {
@@ -60,8 +60,8 @@ export async function getAnalytics() {
                 },
             },
         ])
-        .toArray()
-        .forEach((ageCount) => (template[ageCount._id] = ageCount.count));
+        .toArray();
+    temp.forEach((ageCount) => (template[ageCount._id] = ageCount.count));
     return template;
 }
 
