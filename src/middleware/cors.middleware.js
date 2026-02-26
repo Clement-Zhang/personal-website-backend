@@ -2,7 +2,7 @@ import 'dotenv/config';
 
 export default {
     origin: (origin, callback) => {
-        print(
+        console.log(
             'actual origin: ' + origin,
             'allowed origins: ' + process.env.CORS_ORIGINS,
         );
