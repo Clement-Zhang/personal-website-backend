@@ -5,5 +5,4 @@ export async function update(socket) {
         users: await getAllUsers(),
         analytics: await getAnalytics(),
     });
-    console.log('Emitted update');
 }
