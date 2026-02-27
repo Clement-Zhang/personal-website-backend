@@ -15,7 +15,7 @@ async function run() {
         const dating = client.db('dating').collection('users');
         const analytics = client.db('analytics').collection('users');
         const changes = analytics.watch();
-        console.log(changes.closed);
+        console.log('change stream closed?', changes.closed);
         await dating.createSearchIndex({
             name: 'summary',
             type: 'vectorSearch',
