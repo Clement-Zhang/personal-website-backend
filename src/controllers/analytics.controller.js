@@ -18,10 +18,6 @@ export const getData = async (_, res) =>
         analytics: await getAnalytics(),
     });
 
-export const summarize = async (_, res) => res.json(await getAnalytics());
-
-export const getUsers = async (_, res) => res.json(await getAllUsers());
-
 export async function editUser(req, res) {
     await updateUser(req.body);
     res.end();
