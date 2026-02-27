@@ -15,21 +15,6 @@ async function run() {
         const dating = client.db('dating').collection('users');
         const analytics = client.db('analytics').collection('users');
         const changes = analytics.watch();
-        changes.on('change', (change) => {
-            console.log('CHANGE EVENT:', change);
-        });
-
-        changes.on('error', (err) => {
-            console.log('ERROR EVENT:', err);
-        });
-
-        changes.on('close', () => {
-            console.log('CLOSE EVENT');
-        });
-
-        changes.on('end', () => {
-            console.log('END EVENT');
-        });
         await dating.createSearchIndex({
             name: 'summary',
             type: 'vectorSearch',
